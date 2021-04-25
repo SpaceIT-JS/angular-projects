@@ -1,0 +1,32 @@
+.table {
+    width: 100%;
+
+    &__header-manage {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    &__column-options {
+        width: 1%;
+        white-space: nowrap;
+    }
+
+    &__no-data {
+        text-align: center;
+    }
+
+    .icon {
+        &:hover {
+            cursor: pointer;
+        }
+
+        &.add,
+        &.save {
+            color: green;
+        }
+
+        &.remove {
+            color: crimson;
+        }
+    }
+}
