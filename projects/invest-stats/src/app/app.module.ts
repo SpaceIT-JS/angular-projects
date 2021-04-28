@@ -6,8 +6,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { BrowserModule } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { StoreModule } from '@ngrx/store';
 import { AppComponent } from './app.component';
 import { DataTableComponent } from './components/data-table/data-table.component';
+import { InvestitionReducer } from './store/invests.reducer';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,9 @@ import { DataTableComponent } from './components/data-table/data-table.component
     MatTableModule,
     MatInputModule,
     MatIconModule,
+    StoreModule.forRoot({
+      investitions: InvestitionReducer
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

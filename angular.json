@@ -145,6 +145,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "invest-stats"
+    }
+  },
+  "defaultProject": "invest-stats",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }
