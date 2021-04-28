@@ -9,7 +9,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule } from '@ngrx/store';
 import { AppComponent } from './app.component';
 import { DataTableComponent } from './components/data-table/data-table.component';
-import * as fromDataState from './reducers';
+import { InvestitionReducer } from './store/invests.reducer';
 
 @NgModule({
   declarations: [
@@ -25,11 +25,9 @@ import * as fromDataState from './reducers';
     MatTableModule,
     MatInputModule,
     MatIconModule,
-    StoreModule.forFeature(
-      fromDataState.dataStateFeatureKey,
-      fromDataState.reducers,
-      { metaReducers: fromDataState.metaReducers }
-    ),
+    StoreModule.forRoot({
+      investitions: InvestitionReducer
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
