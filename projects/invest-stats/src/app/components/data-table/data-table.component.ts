@@ -1,9 +1,10 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { InvestModel } from '../../models/invest.model';
-import { addInvestition, removeInvestitions, setActiveInvestition, updateInvestitions } from '../../store/invests.actions';
+import { ExportService, ExportType } from '../../services/export.service';
+import { addInvestition, removeInvestitions, setActiveInvestition, updateInvestitions, replaceInvestitions } from '../../store/invests.actions';
 import InvestState from '../../store/invests.state';
 
 @Component({
@@ -14,25 +15,28 @@ import InvestState from '../../store/invests.state';
 export class DataTableComponent implements OnDestroy {
   displayedColumns: string[] = ['index', 'date', 'currency', 'amount', 'cost', 'fee', 'options'];
 
+  @ViewChild('fileInput') fileInput?: ElementRef;
+
   public panelOpenState = false;
   public editingModel?: InvestModel;
   public investitions$: Observable<Array<InvestModel>>;
-  public activeInvestitionSubscribtion: Subscription;
 
-  constructor(private store: Store<{ investitions: InvestState }>) {
-    this.investitions$ = this.store
+  private investitionsStore$: Observable<InvestState>;
+  private activeInvestitionSubscribtion: Subscription;
+
+  constructor(
+    private store: Store<{ investitions: InvestState }>,
+    private exportService: ExportService
+  ) {
+    this.investitionsStore$ = this.store.pipe(select('investitions'));
+
+    this.investitions$ = this.investitionsStore$
       .pipe(
-        select('investitions'),
-        map(state => {
-          return state.investitions;
-        })
+        map(state => state.investitions)
       );
-    this.activeInvestitionSubscribtion = this.store
-      .pipe(
-        select('investitions')
-      ).subscribe(state => {
-        this.editingModel = { ...state.activeInvestition } as InvestModel;
-      });
+    this.activeInvestitionSubscribtion = this.investitionsStore$.subscribe(state => {
+      this.editingModel = { ...state.activeInvestition } as InvestModel;
+    });
   }
 
   startEditRow(idx: number): void {
@@ -66,6 +70,36 @@ export class DataTableComponent implements OnDestroy {
   removeRow(idx: number): void {
     console.log('DataTableComponent::removeRow');
     this.store.dispatch(removeInvestitions({ idx }));
+  }
+
+  saveData(type: ExportType): void {
+    console.log('DataTableComponent::saveData', { type });
+    this.investitions$
+      .pipe(take(1))
+      .subscribe(investitions => {
+        this.exportService.exportData(type, investitions);
+      });
+  }
+
+  fileSelected(): void {
+    if (!this.fileInput) {
+      console.warn('Couldn\'t find file input element');
+      return;
+    }
+
+    const selectedFile = this.fileInput.nativeElement.files[0] as Blob;
+    this.exportService
+      .importData('json', selectedFile)
+      .pipe(take(1))
+      .subscribe((res) => {
+        this.store.dispatch(replaceInvestitions({
+          newInvestitions: res as Array<InvestModel>
+        }));
+      });
+  }
+
+  loadData(type: ExportType): void {
+    console.log('DataTableComponent::loadData');
   }
 
   ngOnDestroy(): void {

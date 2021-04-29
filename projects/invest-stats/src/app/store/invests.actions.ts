@@ -1,7 +1,11 @@
 import { createAction, props } from '@ngrx/store';
 import { InvestModel } from '../models/invest.model';
 
-export const getInvestitions = createAction('[Data Service] List investitions');
+export const replaceInvestitions = createAction(
+    '[Data Service] Replace investitions',
+    props<{ newInvestitions: Array<InvestModel> }>()
+);
+
 export const setActiveInvestition = createAction(
     '[Data Service] Start editing',
     props<{ idx: number }>()

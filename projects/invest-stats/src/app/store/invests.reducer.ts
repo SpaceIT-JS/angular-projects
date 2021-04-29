@@ -5,7 +5,7 @@ import {
 } from '@ngrx/store';
 import {
   addInvestition,
-  getInvestitions,
+  replaceInvestitions,
   setActiveInvestition,
   removeInvestitions,
   updateInvestitions
@@ -17,7 +17,13 @@ export const dataStateFeatureKey = 'dataState';
 export const intialState = initializeState();
 export const reducer = createReducer(
   intialState,
-  on(getInvestitions, (state) => state),
+  on(replaceInvestitions, (state, props) => {
+    return {
+      ...state,
+      investitions: props.newInvestitions,
+      activeInvestition: undefined
+    };
+  }),
   on(setActiveInvestition, (state, props) => {
     return {
       ...state,

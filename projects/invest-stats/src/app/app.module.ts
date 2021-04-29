@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table';
 import { BrowserModule } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -25,6 +26,7 @@ import { InvestitionReducer } from './store/invests.reducer';
     MatTableModule,
     MatInputModule,
     MatIconModule,
+    MatMenuModule,
     StoreModule.forRoot({
       investitions: InvestitionReducer
     })
