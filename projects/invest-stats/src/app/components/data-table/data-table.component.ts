@@ -100,6 +100,14 @@ export class DataTableComponent implements OnDestroy {
 
   loadData(type: ExportType): void {
     console.log('DataTableComponent::loadData');
+    this.exportService
+      .importData(type)
+      .pipe(take(1))
+      .subscribe(data => {
+        this.store.dispatch(replaceInvestitions({
+          newInvestitions: data as Array<InvestModel>
+        }));
+      });
   }
 
   ngOnDestroy(): void {

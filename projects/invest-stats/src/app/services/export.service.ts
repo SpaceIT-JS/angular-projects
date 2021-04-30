@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EMPTY, Observable, Subject } from 'rxjs';
+import { EMPTY, Observable, of, Subject } from 'rxjs';
 
 export type ExportType = 'json' | 'localStorage';
 
@@ -16,8 +16,15 @@ export class ExportService {
                     console.warn('File not attached');
                 }
                 return EMPTY;
-            case 'localStorage':
-                return EMPTY;
+                case 'localStorage':
+                let localData = localStorage.getItem('investData');
+                    
+                if (localData) {
+                    return of(JSON.parse(localData));
+                } else {
+                    // TODO notify about lack of data in localStorage
+                    return EMPTY;
+                }
             default:
                 console.warn('Unsupported export type');
                 return EMPTY;
@@ -30,6 +37,7 @@ export class ExportService {
                 this._downloadFile(data);
                 break;
             case 'localStorage':
+                localStorage.setItem('investData', JSON.stringify(data));
                 break;
             default:
                 console.warn('Unsupported export type');
