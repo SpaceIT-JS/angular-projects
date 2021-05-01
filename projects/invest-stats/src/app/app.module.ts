@@ -10,6 +10,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule } from '@ngrx/store';
 import { AppComponent } from './app.component';
 import { DataTableComponent } from './components/data-table/data-table.component';
+import { SnackBarModule } from './modules/snack-bar/snack-bar.module';
 import { InvestitionReducer } from './store/invests.reducer';
 
 @NgModule({
@@ -21,6 +22,7 @@ import { InvestitionReducer } from './store/invests.reducer';
     BrowserModule,
     NoopAnimationsModule,
     FormsModule,
+    SnackBarModule,
 
     MatExpansionModule,
     MatTableModule,

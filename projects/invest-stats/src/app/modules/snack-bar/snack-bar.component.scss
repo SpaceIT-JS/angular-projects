@@ -1,0 +1,35 @@
+::ng-deep {
+    .snackbar-message {
+        color: #0a0a0b;
+        font-size: 1rem;
+        border-radius: 0 ;
+        background: white;
+        opacity: 0.95;
+        border-width: 2px;
+        border-style: solid;
+
+        &--success {
+            border-color: #00b719;
+
+            .mat-icon {
+                color: #00b719;
+            }
+        }
+        &--error {
+            border-color: #df0021;
+
+            .mat-icon {
+                color: #df0021;
+            }
+        }
+
+        .mat-icon {
+            margin: 0 6px;
+        }
+
+        .snack-bar__content {
+            display: flex;
+            align-items: center;
+        }
+    }
+}

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EMPTY, Observable, of, Subject } from 'rxjs';
+import { SnackBarService } from '../modules/snack-bar/snack-bar.service';
 
 export type ExportType = 'json' | 'localStorage';
 
@@ -7,6 +8,9 @@ export type ExportType = 'json' | 'localStorage';
     providedIn: 'root'
 })
 export class ExportService {
+
+    constructor(private snackBarService: SnackBarService) { }
+
     importData(type: ExportType, file?: Blob): Observable<object | Array<any>> {
         switch (type) {
             case 'json':
@@ -22,7 +26,7 @@ export class ExportService {
                 if (localData) {
                     return of(JSON.parse(localData));
                 } else {
-                    // TODO notify about lack of data in localStorage
+                    this.snackBarService.showError('There is no data in browser storage.');
                     return EMPTY;
                 }
             default:
@@ -38,6 +42,7 @@ export class ExportService {
                 break;
             case 'localStorage':
                 localStorage.setItem('investData', JSON.stringify(data));
+                this.snackBarService.showSuccess('Data stored in your browser.');
                 break;
             default:
                 console.warn('Unsupported export type');
