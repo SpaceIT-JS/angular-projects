@@ -16,8 +16,8 @@ export class ExportService {
                     console.warn('File not attached');
                 }
                 return EMPTY;
-                case 'localStorage':
-                let localData = localStorage.getItem('investData');
+            case 'localStorage':
+                const localData = localStorage.getItem('investData');
                     
                 if (localData) {
                     return of(JSON.parse(localData));
